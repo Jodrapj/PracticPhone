@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.practic.ui.theme.PracticTheme
+import org.w3c.dom.Text
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -58,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val btpit = Author(painterResource(id = R.mipmap.ic_launcher_foreground), "BTPIT", getTimeNow())
                     val post = Post("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus magna tincidunt consectetur lacus fringilla consequat aliquam maximus habitasse. Enim dapibus class dictumst lectus mauris est ipsum nostra id molestie arcu class. Habitant turpis cursus habitasse netus imperdiet egestas augue taciti.",
-                        1000,1100,1000, btpit)
+                        123000,11000,1_300_000, btpit)
                     post.Draw()
                 }
             }
@@ -85,7 +86,20 @@ fun getTimeNow(): String {
             month = ""
         }
     }
-    val hourMinutes: String = LocalDateTime.now().hour.plus(3).toString() + ":" + LocalDateTime.now().toLocalTime().minute
+    var minutes: String = LocalDateTime.now().toLocalTime().minute.toString()
+    when (minutes) {
+        "0" -> minutes = "00"
+        "1" -> minutes = "01"
+        "2" -> minutes = "02"
+        "3" -> minutes = "03"
+        "4" -> minutes = "04"
+        "5" -> minutes = "05"
+        "6" -> minutes = "06"
+        "7" -> minutes = "07"
+        "8" -> minutes = "08"
+        "9" -> minutes = "09"
+    }
+    val hourMinutes: String = LocalDateTime.now().hour.plus(3).toString() + ":" + minutes
     return LocalDateTime.now().dayOfMonth.toString() + " " + month + " " + hourMinutes
 }
 class Author( // Author class for post class top row.
@@ -104,6 +118,8 @@ class Post(
     fun Draw() {
         val likeChecked = remember { mutableStateOf(false)}
         val CurrentReposts = remember { mutableStateOf(reposts)}
+        val CurrentLikes = remember { mutableStateOf(likes) }
+        val CurrentViews = remember { mutableStateOf(views) }
         val icons = Icons.Default
         Column( // Main UI
             Modifier
@@ -142,92 +158,82 @@ class Post(
             ) {
                 Column {// Likes click script
                     Row {
+                        val v1: String = CurrentLikes.value.toString()
                         IconToggleButton(
                             checked = likeChecked.value,
                             onCheckedChange = {
                                 likeChecked.value = it
                                 if (likeChecked.value) {
-                                    likes++
+                                    CurrentLikes.value++
                                 } else {
-                                    likes--
+                                    CurrentLikes.value--
                                 }
                             }) {
                             if (likeChecked.value) {
                                 androidx.compose.material3.Icon(
                                     imageVector = icons.Favorite,
-                                    contentDescription = "$likes"
+                                    contentDescription = v1
                                 )
                             } else {
                                 androidx.compose.material3.Icon(
                                     imageVector = icons.FavoriteBorder,
-                                    contentDescription = "$likes"
+                                    contentDescription = v1
                                 )
                             }
                         }
                         if (likes < 999)
-                            Text(text = "$likes")
-                        else if (likes >= 1000) {
-                            if (likes < 1100) {
-                                val v1: String = likes.toString()
-                                Text(text = v1[0].toString() + "K")
-                            } else {
-                                val v1:String = likes.toString()
-                                Text(text = v1[0].toString() + "." + v1[1].toString() + "K")
-                            }
+                            Text(text = v1)
+                        else {
+                            numberRangeSwitch(CurrentLikes)
                         }
                     }
                 }
                 Column {// Reposts click script
                     Row {
+                        val v1 : String = CurrentReposts.value.toString()
                         IconButton( onClick = {
                             CurrentReposts.value++
                         }) {
                             androidx.compose.material3.Icon(
                                 imageVector = icons.Share,
-                                contentDescription = "${CurrentReposts.value}"
+                                contentDescription = v1
                             )
                         }
                         if (CurrentReposts.value <= 999)
-                            Text(text = "${CurrentReposts.value}")
-                        else if (CurrentReposts.value >= 1000) {
-                            if (CurrentReposts.value < 1100) {
-                                val v1: String = CurrentReposts.value.toString()
-                                Text(text = v1[0].toString() + "K")
-                            } else {
-                                val v1:String = CurrentReposts.value.toString()
-                                Text(text = v1[0].toString() + "." + v1[1].toString() + "K")
-                            }
+                            Text(text = v1)
+                        else {
+                            numberRangeSwitch(CurrentReposts)
                         }
                     }
                 }
                 Column {
                     Row {
-                        val v1 : String = views.toString()
+                        val v1 : String = CurrentViews.value.toString()
                         Icon(icons.AccountCircle, contentDescription = "$views",
                             Modifier
-                                .padding(180.dp, 0.dp, 0.dp, 0.dp)
+                                .padding(130.dp, 0.dp, 0.dp, 0.dp)
                                 )
                         if (views <= 999)
                             Text(text = " $views")
                         else {
-                            when {
-                                views < 1100 -> Text(v1[0].toString() + "K")
-                                views < 10000 -> Text(text = v1[0].toString() + "." + v1[1].toString() + "K")
-                                views < 100_000 -> Text(text = v1[0].toString() + v1[1].toString() + "K")
-                                views < 1_000_000 -> Text(text = v1[0].toString() + v1[1].toString() + v1[2].toString() + "K")
-                                views < 1_000_000_000 -> Text(text = v1[0].toString() + "." + v1[1].toString() + "M")
-                            }
-                            if (views < 1100) {
-                                Text(text = v1[0].toString() + "K")
-                            } else if (views < 10000) {
-                                Text(text = v1[0].toString() + "." + v1[1].toString() + "K")
-                            } else if (views >= 10000) {
-                                Text(text = v1[0].toString() + v1[1].toString() + "K")
-                            }
+                            numberRangeSwitch(CurrentViews)
                         }
                     }
                 }
             }
         }
+    }
+    @Composable
+    private fun numberRangeSwitch(mutableState: MutableState<Int>): Unit {
+        val v1: String = mutableState.value.toString()
+        var result: Unit = Text("")
+        when {
+            mutableState.value in 1000..1099  -> result = Text(v1[0].toString() + "K")
+            mutableState.value in 1100 .. 9999 -> result = Text(v1[0].toString() + "." + v1[1].toString() + "K")
+            mutableState.value in 10000 .. 99999 -> result = Text(v1[0].toString() + v1[1].toString() + "K")
+            mutableState.value in 100_000 .. 999_999 -> result = Text(v1[0].toString() + v1[1].toString() + v1[2].toString() + "K")
+            mutableState.value in 1_000_000 .. 999_999_999 -> result = Text(v1[0].toString() + "." + v1[1].toString() + "M")
+        }
+        return result
     }
 }
