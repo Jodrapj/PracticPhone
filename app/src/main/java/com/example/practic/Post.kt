@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
@@ -24,7 +25,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -52,11 +56,12 @@ class Post(
             Modifier
                 .fillMaxWidth()
                 .padding(paddingValues = PaddingValues(10.dp, 20.dp, 10.dp, 20.dp))
+                .shadow(1.dp)
                 .border(BorderStroke(Dp(2f), Color(168, 168, 168)))
         ) {
             Row( // Top row (Author, info.)
                 Modifier
-                    .border(BorderStroke(Dp(2f), Color(168, 168, 168)))
+                    //.border(BorderStroke(Dp(0f), Color(168, 168, 168)))
                     .fillMaxWidth()
                     .height(Dp(80f))
             ) {
@@ -71,7 +76,8 @@ class Post(
             }
             Row( // Main row (Text.)
                 Modifier
-                    .border(BorderStroke(Dp(2f), Color(168, 168, 168)))
+                    //.border(BorderStroke(Dp(2f), Color(168, 168, 168)))
+                    .shadow(2.dp)
                     .fillMaxWidth()
             ) {
                 Text(text = text,
