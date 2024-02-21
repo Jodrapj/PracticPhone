@@ -20,11 +20,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val time = TimeParser()
-                    val btpit = Author(painterResource(id = R.mipmap.ic_launcher_foreground), "BTPIT", time.getTimeNow())
-                    val post = Post("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus magna tincidunt consectetur lacus fringilla consequat aliquam maximus habitasse. Enim dapibus class dictumst lectus mauris est ipsum nostra id molestie arcu class. Habitant turpis cursus habitasse netus imperdiet egestas augue taciti.",
-                        100,100,1_300_000, btpit)
-                    post.Draw()
+                    val model = ThisViewModel()
+                    model.Screen()
                 }
             }
         }

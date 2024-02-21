@@ -76,7 +76,7 @@ class Post(
             }
             Row( // Main row (Text.)
                 Modifier
-                    //.border(BorderStroke(Dp(2f), Color(168, 168, 168)))
+                    .border(BorderStroke(Dp(2f), Color(168, 168, 168)))
                     .shadow(2.dp)
                     .fillMaxWidth()
             ) {
@@ -159,7 +159,7 @@ class Post(
         }
     }
     @Composable
-    private fun numberRangeSwitch(mutableState: MutableState<Int>): Unit {
+    private fun numberRangeSwitch(mutableState: MutableState<Int>): Unit { // Switches display based on the size of the number
         val v1: String = mutableState.value.toString()
         var result: Unit = Text("")
         when {
