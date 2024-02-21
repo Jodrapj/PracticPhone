@@ -123,7 +123,7 @@ class Post(
                 )
                 Column {
                     Text(Author.Name, Modifier.padding(0.dp,18.dp,0.dp,0.dp))
-                    Text(Author.PostTime.toString())
+                    Text(Author.PostTime)
                 }
             }
             Row( // Main row (Text.)
@@ -202,6 +202,7 @@ class Post(
                 }
                 Column {
                     Row {
+                        val v1 : String = views.toString()
                         Icon(icons.AccountCircle, contentDescription = "$views",
                             Modifier
                                 .padding(180.dp, 0.dp, 0.dp, 0.dp)
@@ -209,12 +210,19 @@ class Post(
                         if (views <= 999)
                             Text(text = " $views")
                         else {
+                            when {
+                                views < 1100 -> Text(v1[0].toString() + "K")
+                                views < 10000 -> Text(text = v1[0].toString() + "." + v1[1].toString() + "K")
+                                views < 100_000 -> Text(text = v1[0].toString() + v1[1].toString() + "K")
+                                views < 1_000_000 -> Text(text = v1[0].toString() + v1[1].toString() + v1[2].toString() + "K")
+                                views < 1_000_000_000 -> Text(text = v1[0].toString() + "." + v1[1].toString() + "M")
+                            }
                             if (views < 1100) {
-                                val v1: String = views.toString()
                                 Text(text = v1[0].toString() + "K")
-                            } else {
-                                val v1:String = views.toString()
+                            } else if (views < 10000) {
                                 Text(text = v1[0].toString() + "." + v1[1].toString() + "K")
+                            } else if (views >= 10000) {
+                                Text(text = v1[0].toString() + v1[1].toString() + "K")
                             }
                         }
                     }
