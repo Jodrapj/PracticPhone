@@ -1,29 +1,44 @@
 package com.example.practic
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import java.time.LocalDateTime
 
 class TimeParser {
-    @Composable
+    private val map = mapOf(
+        1 to "January",
+        2 to "February",
+        3 to "March",
+        4 to "April",
+        5 to "May",
+        6 to "June",
+        7 to "July",
+        8 to "August",
+        9 to "September",
+        10 to "October",
+        11 to "November",
+        12 to "December"
+    )
     fun getTimeNow(): String {
-        val month: String
-        when (LocalDateTime.now().month.value) {
-            1 -> month = stringResource(R.string.january)
-            2 -> month = stringResource(R.string.february)
-            3 -> month = stringResource(R.string.march)
-            4 -> month = stringResource(R.string.april)
-            5 -> month = stringResource(R.string.may)
-            6 -> month = stringResource(R.string.june)
-            7 -> month = stringResource(R.string.july)
-            8 -> month = stringResource(R.string.august)
-            9 -> month = stringResource(R.string.september)
-            10 -> month = stringResource(R.string.october)
-            11 -> month = stringResource(R.string.november)
-            12 -> month = stringResource(R.string.december)
+        var month = ""
+            for(value in map) {
+                when (LocalDateTime.now().month.value) {
+                    value.key -> month = value.value
+                }
+        /*when (LocalDateTime.now().month.value) {
+            1 -> month = context.resources.getString(R.string.january)
+            2 -> month = context.resources.getString(R.string.february)
+            3 -> month = context.resources.getString(R.string.march)
+            4 -> month = context.resources.getString(R.string.april)
+            5 -> month = context.resources.getString(R.string.may)
+            6 -> month = context.resources.getString(R.string.june)
+            7 -> month = context.resources.getString(R.string.july)
+            8 -> month = context.resources.getString(R.string.august)
+            9 -> month = context.resources.getString(R.string.september)
+            10 -> month = context.resources.getString(R.string.october)
+            11 -> month = context.resources.getString(R.string.november)
+            12 -> month = context.resources.getString(R.string.december)
             else -> {
                 month = ""
-            }
+            }*/
         }
         var minutes: String = LocalDateTime.now().toLocalTime().minute.toString()
         when (minutes) {

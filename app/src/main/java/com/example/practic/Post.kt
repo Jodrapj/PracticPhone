@@ -1,5 +1,6 @@
 package com.example.practic
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
@@ -25,20 +25,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+private val timeParser = TimeParser()
 class Author( // Author class for post class top row.
-    var Avatar: Painter,
+    //var Avatar: Painter, I dont fucking know how to fix composable callback problem
     val Name: String,
     val PostTime: String
 )
-class Post(
+data class Post(
+    val id: Long,
     val text: String,
     var likes: Int,
     var reposts: Int,
@@ -46,7 +46,7 @@ class Post(
     val Author: Author
 ) {
     @Composable
-    fun Draw() {
+    fun DrawPost() {
         val likeChecked = remember { mutableStateOf(false) }
         val CurrentReposts = remember { mutableStateOf(reposts) }
         val CurrentLikes = remember { mutableStateOf(likes) }
@@ -65,10 +65,10 @@ class Post(
                     .fillMaxWidth()
                     .height(Dp(80f))
             ) {
-                Image(
+                /*Image( fucking composable
                     painter = Author.Avatar,
                     contentDescription = Author.Name
-                )
+                )*/
                 Column {
                     Text(Author.Name, Modifier.padding(0.dp,18.dp,0.dp,0.dp))
                     Text(Author.PostTime)
@@ -170,5 +170,9 @@ class Post(
             mutableState.value in 1_000_000 .. 999_999_999 -> result = Text(v1[0].toString() + "." + v1[1].toString() + "M")
         }
         return result
+    }
+
+    fun Author(s: String, s1: String): Author {
+        return Author
     }
 }
